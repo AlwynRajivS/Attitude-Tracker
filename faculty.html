@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Faculty Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h2>Faculty Dashboard</h2>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page">
+
+  <h3>Search Student</h3>
+  <!-- SEARCH STUDENT -->
+  <div class="filters">
+    <input id="roll" placeholder="Student Roll No">
+    <button onclick="loadStudent()">Search</button>
+  </div>
+
+  <div id="student"></div>
+
+  <h3>Behavioural Entry</h3>
+  <!-- ATTITUDE ENTRY -->
+  <div class="filters">
+    <select id="type" onchange="loadAttitude()">
+      <option value="MIS">BAD</option>
+      <option value="GOOD">GOOD</option>
+    </select>
+
+    <select id="attitude"></select>
+    <input id="remarks" placeholder="Remarks">
+
+    <button onclick="save()">Save</button>
+    <button onclick="viewHistory()">View History</button>
+  </div>
+<div id="history"></div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

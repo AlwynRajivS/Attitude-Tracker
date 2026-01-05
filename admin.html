@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h2>Admin Dashboard</h2>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page">
+
+  <h3>Report download</h3>
+  <!-- FILTERS -->
+  <div class="filters">
+    <select id="dept"></select>
+    <select id="year"></select>
+    <select id="section"></select>
+
+    <button onclick="loadReport()">Load</button>
+    <button onclick="downloadCSV()">CSV</button>
+    <button onclick="downloadPDF()">PDF</button>
+  </div>
+
+  <!-- REPORT TABLE -->
+  <table id="report"></table>
+
+  <h3>Draft HoD Mail</h3>
+
+<div class="filters">
+  <input type="date" id="fromDate">
+  <input type="date" id="toDate">
+  <button onclick="createHoDDrafts()">Create Draft Mails</button>
+</div>
+
+  <!-- ATTITUDE MASTER -->
+  <h3>Attitude Master</h3>
+
+  <div class="filters">
+    <select id="attType">
+      <option value="MIS">BAD</option>
+      <option value="GOOD">GOOD</option>
+    </select>
+
+    <input id="attName" placeholder="Attitude Name">
+    <input id="attMarks" type="number" placeholder="Marks">
+
+    <button onclick="addAttitude()">Add Attitude</button>
+  </div>
+
+  <table id="attTable"></table>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<script src="app.js"></script>
+
+<script>
+  loadFilters();
+  loadAttitudeMaster();
+</script>
+
+</body>
+</html>

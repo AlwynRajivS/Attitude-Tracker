@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <h2>Student Dashboard</h2>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page">
+
+  <!-- STUDENT INFO -->
+  <div id="info"></div>
+
+  <!-- SCORE SUMMARY -->
+  <h3>Score Summary</h3>
+  <div id="score"></div>
+
+  <!-- ATTITUDE HISTORY -->
+  <h3>Attitude History</h3>
+  <button onclick="downloadStudentPDF()">Download PDF</button>
+  <div id="history"></div>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+const info = document.getElementById("info");
+const history = document.getElementById("history");
+const scoreBox = document.getElementById("score");
+
+const student = JSON.parse(localStorage.getItem("student"));
+
+if(!student){
+  alert("Session expired");
+  location = "index.html";
+}
+
+info.innerHTML = `
+<b>Name:</b> ${student.name}<br><br>
+<b>Roll:</b> ${student.roll}<br><br>
+<b>Dept:</b> ${student.dept} | ${student.year}-${student.section}
+`;
+
+fetch(API,{
+  method:"POST",
+  body: JSON.stringify({
+    action:"studentDashboard",
+    roll: student.roll
+  })
+})
+.then(r=>r.json())
+.then(d=>{
+
+  if(d.score){
+    scoreBox.innerHTML = `
+      <table>
+        <tr>
+          <th>MIS Total</th>
+          <th>GOOD Total</th>
+          <th>Available Points</th>
+        </tr>
+        <tr>
+          <td>${d.score[5]}</td>
+          <td>${d.score[6]}</td>
+          <td><b>${d.score[7]}</b></td>
+        </tr>
+      </table>
+    `;
+  } else {
+    scoreBox.innerHTML = "<p>No score available</p>";
+  }
+
+  if(!d.history || d.history.length === 0){
+    history.innerHTML = "<p>No attitude records found</p>";
+    return;
+  }
+
+  history.innerHTML = `
+    <table>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Attitude</th>
+        <th>Points</th>
+      </tr>
+      ${d.history.map(r=>`
+        <tr>
+          <td>${new Date(r[0]).toLocaleDateString()}</td>
+          <td>${r[7]}</td>
+          <td>${r[8]}</td>
+          <td>${r[9]}</td>
+        </tr>
+      `).join("")}
+    </table>
+  `;
+});
+</script>
+
+</body>
+</html>
