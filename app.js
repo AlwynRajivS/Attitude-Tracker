@@ -125,10 +125,10 @@ function save(){
   .then(r=>r.json())
   .then(d=>{
     if(d.ok){
-      alert("Saved successfully");
+      alert("Saved failed");
       remarks.value="";
     } else {
-      alert("Save failed");
+      alert("Save successfully");
     }
   });
 }
@@ -586,5 +586,6 @@ function createHoDDrafts() {
     }
   });
 }
+
 
 
