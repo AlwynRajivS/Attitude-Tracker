@@ -1,11 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Student Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#020617,#0f172a);
+  color:#fff;
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#020617;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+
+.topbar h2{
+  margin:0;
+  font-size:18px;
+}
+
+.logout{
+  background:#ef4444;
+  border:none;
+  padding:8px 14px;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* ===== PAGE ===== */
+.page{
+  max-width:1000px;
+  margin:auto;
+  padding:16px;
+}
+
+/* ===== HEADINGS ===== */
+h3{
+  margin:22px 0 12px;
+  font-size:17px;
+}
+
+/* ===== INFO CARD ===== */
+#info{
+  background:rgba(59,130,246,.15);
+  border-left:4px solid #3b82f6;
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:18px;
+  line-height:1.6;
+  font-size:15px;
+}
+
+/* ===== SCORE SUMMARY ===== */
+#score{
+  background:rgba(255,255,255,.06);
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:18px;
+  overflow-x:auto;
+}
+
+#score table{
+  width:100%;
+  min-width:500px;
+  border-collapse:separate;
+  border-spacing:0 8px;
+}
+
+#score th{
+  background:#0f172a;
+  color:#fff;
+  padding:12px;
+  font-size:14px;
+}
+
+#score td{
+  background:#ffffff;
+  color:#000;
+  padding:12px;
+  text-align:center;
+  font-size:14px;
+  border-radius:10px;
+}
+
+/* ===== DOWNLOAD BUTTON ===== */
+button{
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  border:none;
+  padding:10px 16px;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin-bottom:12px;
+}
+
+/* ===== HISTORY ===== */
+#history{
+  background:rgba(255,255,255,.06);
+  padding:16px;
+  border-radius:16px;
+  overflow-x:auto;
+}
+
+#history table{
+  width:100%;
+  min-width:650px;
+  border-collapse:separate;
+  border-spacing:0 10px;
+}
+
+#history th{
+  background:#0f172a;
+  color:#fff;
+  padding:12px;
+  font-size:14px;
+}
+
+#history td{
+  background:#ffffff;
+  color:#000;
+  padding:12px;
+  text-align:center;
+  font-size:14px;
+  border-radius:10px;
+}
+
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  h3{
+    font-size:16px;
+  }
+  #info{
+    font-size:14px;
+  }
+}
+</style>
 </head>
 
 <body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 
@@ -22,11 +173,11 @@
   <div id="info"></div>
 
   <!-- SCORE SUMMARY -->
-  <h3>Score Summary</h3>
+  <h3>📊 Score Summary</h3>
   <div id="score"></div>
 
   <!-- ATTITUDE HISTORY -->
-  <h3>Attitude History</h3>
+  <h3>🧠 Attitude History</h3>
   <button onclick="downloadStudentPDF()">Download PDF</button>
   <div id="history"></div>
 
@@ -35,6 +186,7 @@
 <script src="app.js"></script>
 
 <script>
+/* ===== ORIGINAL LOGIC – UNCHANGED ===== */
 const info = document.getElementById("info");
 const history = document.getElementById("history");
 const scoreBox = document.getElementById("score");
