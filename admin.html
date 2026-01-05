@@ -1,137 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Admin Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-*{box-sizing:border-box;font-family:Poppins,sans-serif}
-
-body{
-  margin:0;
-  background:linear-gradient(180deg,#020617,#0f172a);
-  color:#fff;
-}
-
-/* ===== TOP BAR ===== */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:100;
-  padding:14px 16px;
-  background:rgba(2,6,23,.95);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  box-shadow:0 6px 20px rgba(0,0,0,.5);
-}
-
-.topbar h2{
-  font-size:18px;
-  margin:0;
-}
-
-.logout{
-  background:#ef4444;
-  border:none;
-  padding:8px 14px;
-  border-radius:12px;
-  color:#fff;
-  font-weight:600;
-}
-
-/* ===== PAGE ===== */
-.page{
-  padding:14px;
-  max-width:1200px;
-  margin:auto;
-}
-
-/* ===== SECTION CARD ===== */
-.section{
-  background:rgba(255,255,255,.06);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:18px;
-  animation:fadeUp .5s ease;
-}
-
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.section h3{
-  margin:0 0 12px;
-  font-size:16px;
-}
-
-/* ===== FILTERS ===== */
-.filters{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-}
-
-.filters select,
-.filters input,
-.filters button{
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  font-size:15px;
-}
-
-.filters button{
-  background:linear-gradient(90deg,#22c55e,#16a34a);
-  color:#fff;
-  font-weight:600;
-}
-
-/* ===== TABLE ===== */
-.table-wrap{
-  overflow-x:auto;
-  margin-top:12px;
-  border-radius:14px;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  color:#000;
-}
-
-th,td{
-  padding:10px;
-  text-align:center;
-  font-size:14px;
-  border-bottom:1px solid #e5e7eb;
-}
-
-th{
-  background:#0f172a;
-  color:#fff;
-}
-
-/* ===== DESKTOP ===== */
-@media(min-width:768px){
-  .filters{
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  }
-
-  .topbar h2{
-    font-size:20px;
-  }
-
-  .section h3{
-    font-size:18px;
-  }
-}
-</style>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -142,62 +13,51 @@ th{
   <button class="logout" onclick="logout()">Logout</button>
 </div>
 
+<!-- PAGE CONTENT -->
 <div class="page">
 
-  <!-- REPORT -->
-  <div class="section">
-    <h3>📊 Report Download</h3>
+  <h3>Report download</h3>
+  <!-- FILTERS -->
+  <div class="filters">
+    <select id="dept"></select>
+    <select id="year"></select>
+    <select id="section"></select>
 
-    <div class="filters">
-      <select id="dept"></select>
-      <select id="year"></select>
-      <select id="section"></select>
-
-      <button onclick="loadReport()">Load Report</button>
-      <button onclick="downloadCSV()">Download CSV</button>
-      <button onclick="downloadPDF()">Download PDF</button>
-    </div>
-
-    <div class="table-wrap">
-      <table id="report"></table>
-    </div>
+    <button onclick="loadReport()">Load</button>
+    <button onclick="downloadCSV()">CSV</button>
+    <button onclick="downloadPDF()">PDF</button>
   </div>
 
-  <!-- HOD MAIL -->
-  <div class="section">
-    <h3>📧 Draft HoD Mail</h3>
+  <!-- REPORT TABLE -->
+  <table id="report"></table>
 
-    <div class="filters">
-      <input type="date" id="fromDate">
-      <input type="date" id="toDate">
-      <button onclick="createHoDDrafts()">Create Draft Mails</button>
-    </div>
+  <h3>Draft HoD Mail</h3>
+
+<div class="filters">
+  <input type="date" id="fromDate">
+  <input type="date" id="toDate">
+  <button onclick="createHoDDrafts()">Create Draft Mails</button>
+</div>
+
+  <!-- ATTITUDE MASTER -->
+  <h3>Attitude Master</h3>
+
+  <div class="filters">
+    <select id="attType">
+      <option value="MIS">BAD</option>
+      <option value="GOOD">GOOD</option>
+    </select>
+
+    <input id="attName" placeholder="Attitude Name">
+    <input id="attMarks" type="number" placeholder="Marks">
+
+    <button onclick="addAttitude()">Add Attitude</button>
   </div>
 
-  <!-- ATTITUDE -->
-  <div class="section">
-    <h3>🧠 Attitude Master</h3>
-
-    <div class="filters">
-      <select id="attType">
-        <option value="MIS">BAD</option>
-        <option value="GOOD">GOOD</option>
-      </select>
-
-      <input id="attName" placeholder="Attitude Name">
-      <input id="attMarks" type="number" placeholder="Marks">
-
-      <button onclick="addAttitude()">Add Attitude</button>
-    </div>
-
-    <div class="table-wrap">
-      <table id="attTable"></table>
-    </div>
-  </div>
+  <table id="attTable"></table>
 
 </div>
 
-<!-- JS (UNCHANGED) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 <script src="app.js"></script>
