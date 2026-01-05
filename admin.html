@@ -403,9 +403,44 @@ function scrollToSec(id){
   document.getElementById(id).scrollIntoView({behavior:"smooth"});
 }
 loadFilters();
-loadAttitudeMaster();
+function loadAttitudeMaster(){
+ fetch(API,{
+  method:"POST",
+  body:JSON.stringify({action:"getAttitudeMaster"})
+ }).then(r=>r.json()).then(d=>{
+
+  attTable.innerHTML =
+   `<tr>
+     <th>Type</th>
+     <th>Attitude</th>
+     <th>Marks</th>
+     <th>Action</th>
+   </tr>` +
+   d.map(r=>`
+    <tr>
+      <td data-label="Type">${r.type}</td>
+
+      <td data-label="Attitude">
+        <input id="name${r.row}" value="${r.attitude}">
+      </td>
+
+      <td data-label="Marks">
+        <input id="marks${r.row}" type="number" value="${r.marks}">
+      </td>
+
+      <td data-label="Action">
+        <button onclick="updateAttitude(${r.row})">Update</button>
+        <button onclick="deleteAttitude(${r.row})">Delete</button>
+      </td>
+    </tr>
+   `).join("");
+
+ });
+}
+
 </script>
 
 </body>
 </html>
+
 
