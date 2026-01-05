@@ -1,8 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Faculty Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Faculty Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
+
+body{
+  margin:0;
+  background:linear-gradient(180deg,#020617,#0f172a);
+  color:#fff;
+  padding-bottom:70px; /* bottom nav space */
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:#020617;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 6px 20px rgba(0,0,0,.5);
+}
+
+.topbar h2{margin:0;font-size:18px}
+
+.logout{
+  background:#ef4444;
+  border:none;
+  padding:8px 14px;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+}
+
+/* ===== PAGE ===== */
+.page{
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+
+/* ===== HEADINGS ===== */
+h3{margin:22px 0 12px;font-size:17px}
+
+/* ===== FORM CARDS ===== */
+.filters{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  background:rgba(255,255,255,.06);
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:16px;
+}
+
+.filters input,
+.filters select,
+.filters button{
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-size:15px;
+}
+
+/* Buttons */
+.filters button{
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.filters button.history{
+  background:#3b82f6;
+}
+
+/* ===== STUDENT INFO ===== */
+#student{
+  background:rgba(34,197,94,.15);
+  border-left:4px solid #22c55e;
+  padding:12px 16px;
+  border-radius:14px;
+  margin-bottom:16px;
+  font-weight:600;
+}
+
+/* ===== BADGES ===== */
+.badge{
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+  margin-left:8px;
+}
+
+.badge-good{
+  background:#dcfce7;
+  color:#166534;
+  border:1px solid #22c55e;
+}
+
+.badge-bad{
+  background:#fee2e2;
+  color:#991b1b;
+  border:1px solid #ef4444;
+  animation:pulse 1.6s infinite;
+}
+
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(239,68,68,.6)}
+  70%{box-shadow:0 0 0 8px rgba(239,68,68,0)}
+  100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}
+}
+
+/* ===== LOADING SPINNER ===== */
+.loader{
+  display:none;
+  text-align:center;
+  margin:10px 0;
+}
+
+.loader::after{
+  content:"";
+  width:28px;
+  height:28px;
+  border:4px solid #94a3b8;
+  border-top:4px solid #22c55e;
+  border-radius:50%;
+  display:inline-block;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+/* ===== HISTORY ===== */
+#history{
+  background:#fff;
+  color:#000;
+  padding:14px;
+  border-radius:16px;
+  margin-top:16px;
+  overflow-x:auto;
+}
+
+/* ===== BOTTOM NAV ===== */
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:#020617;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  box-shadow:0 -6px 20px rgba(0,0,0,.6);
+}
+
+.bottom-nav button{
+  background:none;
+  border:none;
+  color:#cbd5f5;
+  font-size:13px;
+}
+
+.bottom-nav button.active{
+  color:#22c55e;
+  font-weight:600;
+}
+
+/* ===== DESKTOP ===== */
+@media(min-width:768px){
+  .filters{
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  }
+  .bottom-nav{display:none}
+}
+</style>
 </head>
 
 <body>
@@ -13,36 +197,77 @@
   <button class="logout" onclick="logout()">Logout</button>
 </div>
 
-<!-- PAGE CONTENT -->
 <div class="page">
 
-  <h3>Search Student</h3>
   <!-- SEARCH STUDENT -->
+  <h3>🔍 Search Student</h3>
   <div class="filters">
     <input id="roll" placeholder="Student Roll No">
-    <button onclick="loadStudent()">Search</button>
+    <button onclick="searchStudent()">Search</button>
   </div>
 
+  <div class="loader" id="loaderSearch"></div>
   <div id="student"></div>
 
-  <h3>Behavioural Entry</h3>
-  <!-- ATTITUDE ENTRY -->
+  <!-- BEHAVIOURAL ENTRY -->
+  <h3>🧠 Behavioural Entry</h3>
   <div class="filters">
-    <select id="type" onchange="loadAttitude()">
+    <select id="type" onchange="updateBadge();loadAttitude()">
       <option value="MIS">BAD</option>
       <option value="GOOD">GOOD</option>
     </select>
 
+    <span id="typeBadge" class="badge badge-bad">BAD</span>
+
     <select id="attitude"></select>
     <input id="remarks" placeholder="Remarks">
 
-    <button onclick="save()">Save</button>
-    <button onclick="viewHistory()">View History</button>
+    <button onclick="saveRecord()">Save</button>
+    <button class="history" onclick="viewHistory()">View History</button>
   </div>
-<div id="history"></div>
+
+  <div class="loader" id="loaderSave"></div>
+  <div id="history"></div>
+
 </div>
 
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="active">Entry</button>
+  <button onclick="viewHistory()">History</button>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<!-- JS (SAME LOGIC – app.js USED) -->
 <script src="app.js"></script>
+
+<script>
+/* ===== UI HELPERS ONLY ===== */
+function updateBadge(){
+  const type = document.getElementById("type").value;
+  const badge = document.getElementById("typeBadge");
+  if(type==="GOOD"){
+    badge.textContent="GOOD";
+    badge.className="badge badge-good";
+  }else{
+    badge.textContent="BAD";
+    badge.className="badge badge-bad";
+  }
+}
+
+/* Wrap existing functions (logic untouched) */
+function searchStudent(){
+  document.getElementById("loaderSearch").style.display="block";
+  loadStudent();
+  setTimeout(()=>document.getElementById("loaderSearch").style.display="none",800);
+}
+
+function saveRecord(){
+  document.getElementById("loaderSave").style.display="block";
+  save();
+  setTimeout(()=>document.getElementById("loaderSave").style.display="none",800);
+}
+</script>
 
 </body>
 </html>
