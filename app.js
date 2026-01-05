@@ -1,4 +1,4 @@
-const API = "https://script.google.com/macros/s/AKfycbyub0DXX-BYn9NdU0G8VMtLY18m_QLS_-I-d_1ZexVJnv9kMTsDap6JXQBpRnFsJK3-Bg/exec";
+const API = "https://script.google.com/macros/s/AKfycbzXKRiylOO_5d0w3dIduaQvRe9VRVpygpmJ9iBWytR4sJk5Bg5a4QHorim_fFxreMrxRw/exec";
 let currentStudent = {};
 
 function login() {
@@ -581,3 +581,4 @@ function createHoDDrafts() {
     }
   });
 }
+
