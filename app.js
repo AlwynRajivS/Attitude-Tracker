@@ -48,25 +48,30 @@ function login() {
 }
 
 function loadFilters(){
- fetch(API,{
-  method:"POST",
-  body: JSON.stringify({action:"getFilters"})
- })
- .then(r=>r.json())
- .then(d=>{
-   dept.innerHTML =
-     `<option value="ALL">ALL</option>` +
-     d.dept.map(x=>`<option>${x}</option>`).join("");
+  const dept = document.getElementById("dept");
+  const year = document.getElementById("year");
+  const section = document.getElementById("section");
 
-   year.innerHTML =
-     `<option value="ALL">ALL</option>` +
-     d.year.map(x=>`<option>${x}</option>`).join("");
+  fetch(API,{
+    method:"POST",
+    body: JSON.stringify({action:"getFilters"})
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    dept.innerHTML =
+      `<option value="ALL">ALL</option>` +
+      d.dept.map(x=>`<option>${x}</option>`).join("");
 
-   section.innerHTML =
-     `<option value="ALL">ALL</option>` +
-     d.section.map(x=>`<option>${x}</option>`).join("");
- });
+    year.innerHTML =
+      `<option value="ALL">ALL</option>` +
+      d.year.map(x=>`<option>${x}</option>`).join("");
+
+    section.innerHTML =
+      `<option value="ALL">ALL</option>` +
+      d.section.map(x=>`<option>${x}</option>`).join("");
+  });
 }
+
 
 function loadStudent(){
  fetch(API,{method:"POST",body:JSON.stringify({
@@ -581,4 +586,5 @@ function createHoDDrafts() {
     }
   });
 }
+
 
