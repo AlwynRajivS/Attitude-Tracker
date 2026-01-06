@@ -1,4 +1,4 @@
-const API = "https://script.google.com/macros/s/AKfycbxro_hIQoodwa6jd4IGgsTVXnM6gjExwAJG5aX79IVn8qVp2FmurlVRndqF-517JaPjIA/exec";
+const API = "https://script.google.com/macros/s/AKfycbxBn6GYZBdOekcj-q4NPewW99T0RUM_Z7z4gbLEdM5GS3tzLFxKG_NOviEUJKNJip8TPQ/exec";
 let currentStudent = {};
 
 function login() {
@@ -511,9 +511,9 @@ async function downloadStudentPDF() {
     startY: y + 10,
     head: [["MIS Total", "GOOD Total", "Available Points"]],
     body: [[
-      data.score ? data.score[5] : 0,
-      data.score ? data.score[6] : 0,
-      data.score ? data.score[7] : 0
+      data.score[5],
+      data.score[6],
+      data.score[7]
     ]],
     styles: { font: "times", fontSize: 10, halign: "center" },
     headStyles: { fontStyle: "bold" },
