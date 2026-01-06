@@ -1,4 +1,4 @@
-const API = "https://script.google.com/macros/s/AKfycbygTa3WJzpiHHIvGRnwXkEXjVumPpxcBYfduT3L-UDEIsgY0cz3SFK3UEzWSi8n-BJJWA/exec";
+const API = "https://script.google.com/macros/s/AKfycbxro_hIQoodwa6jd4IGgsTVXnM6gjExwAJG5aX79IVn8qVp2FmurlVRndqF-517JaPjIA/exec";
 let currentStudent = {};
 
 function login() {
@@ -48,30 +48,25 @@ function login() {
 }
 
 function loadFilters(){
-  const dept = document.getElementById("dept");
-  const year = document.getElementById("year");
-  const section = document.getElementById("section");
+ fetch(API,{
+  method:"POST",
+  body: JSON.stringify({action:"getFilters"})
+ })
+ .then(r=>r.json())
+ .then(d=>{
+   dept.innerHTML =
+     `<option value="ALL">ALL</option>` +
+     d.dept.map(x=>`<option>${x}</option>`).join("");
 
-  fetch(API,{
-    method:"POST",
-    body: JSON.stringify({action:"getFilters"})
-  })
-  .then(r=>r.json())
-  .then(d=>{
-    dept.innerHTML =
-      `<option value="ALL">ALL</option>` +
-      d.dept.map(x=>`<option>${x}</option>`).join("");
+   year.innerHTML =
+     `<option value="ALL">ALL</option>` +
+     d.year.map(x=>`<option>${x}</option>`).join("");
 
-    year.innerHTML =
-      `<option value="ALL">ALL</option>` +
-      d.year.map(x=>`<option>${x}</option>`).join("");
-
-    section.innerHTML =
-      `<option value="ALL">ALL</option>` +
-      d.section.map(x=>`<option>${x}</option>`).join("");
-  });
+   section.innerHTML =
+     `<option value="ALL">ALL</option>` +
+     d.section.map(x=>`<option>${x}</option>`).join("");
+ });
 }
-
 
 function loadStudent(){
  fetch(API,{method:"POST",body:JSON.stringify({
@@ -125,10 +120,10 @@ function save(){
   .then(r=>r.json())
   .then(d=>{
     if(d.ok){
-      alert("Saved failed");
+      alert("Saved successfully");
       remarks.value="";
     } else {
-      alert("Save successfully");
+      alert("Save failed");
     }
   });
 }
@@ -586,7 +581,3 @@ function createHoDDrafts() {
     }
   });
 }
-
-
-
-
