@@ -51,20 +51,20 @@ body{
   padding:16px;
 }
 
-/* ===== SECTION HEADERS ===== */
+/* ===== HEADINGS ===== */
 h3{
   margin:24px 0 12px;
   font-size:17px;
 }
 
-/* ===== FILTERS ===== */
+/* ===== FILTER CARDS ===== */
 .filters{
   display:grid;
   grid-template-columns:1fr;
   gap:12px;
   background:rgba(255,255,255,.06);
-  padding:14px;
-  border-radius:16px;
+  padding:16px;
+  border-radius:18px;
   margin-bottom:16px;
 }
 
@@ -84,10 +84,10 @@ h3{
   cursor:pointer;
 }
 
-/* ===== TABLE WRAP ===== */
+/* ===== TABLE WRAPPER ===== */
 .table-wrap{
-  background:rgba(255,255,255,0.06);
-  border-radius:16px;
+  background:rgba(255,255,255,.06);
+  border-radius:18px;
   padding:10px;
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
@@ -97,7 +97,7 @@ h3{
 /* ===== TABLE ===== */
 table{
   width:100%;
-  min-width:760px;
+  min-width:800px;
   border-collapse:separate;
   border-spacing:0 10px;
 }
@@ -117,30 +117,12 @@ td{
   padding:12px;
   text-align:center;
   font-size:14px;
-}
-
-/* Rounded rows */
-tr td:first-child{border-radius:12px 0 0 12px}
-tr td:last-child{border-radius:0 12px 12px 0}
-
-  #attTable td:nth-child(2),
-#attTable th:nth-child(2){
-  min-width:320px;     /* controls column width */
-  text-align:left;
-}
-
-/* Make the input fully occupy the column */
-#attTable td:nth-child(2) input{
-  width:100%;
-  max-width:320px;
-  text-align:left;
-  padding:8px 10px;
-  font-size:14px;
+  border-radius:10px;
 }
 
 /* Inputs inside table */
 table input{
-  width:80px;
+  width:90px;
   padding:6px;
   border-radius:8px;
   border:1px solid #cbd5e1;
@@ -167,28 +149,18 @@ table button:last-child{
   margin-left:6px;
 }
 
-/* ===== MOBILE / TABLET ===== */
+/* ===== MOBILE ===== */
+@media(max-width:768px){
+  h3{font-size:16px}
+  table{min-width:1000px}
+}
+
+/* ===== DESKTOP ===== */
 @media(min-width:768px){
   .filters{
     grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   }
-
-  .topbar h2{
-    font-size:20px;
-  }
-
-  h3{
-    font-size:18px;
-  }
-  #attTable{
-    min-width:1050px;  /* keeps table spacious */
-  }
-
-  #attTable td:nth-child(2),
-  #attTable th:nth-child(2){
-    min-width:300px;
-  }
-}
+  h3{font-size:18px}
 }
 </style>
 </head>
@@ -211,6 +183,7 @@ table button:last-child{
     <select id="dept"></select>
     <select id="year"></select>
     <select id="section"></select>
+
     <button onclick="loadReport()">Load</button>
     <button onclick="downloadCSV()">CSV</button>
     <button onclick="downloadPDF()">PDF</button>
@@ -240,6 +213,7 @@ table button:last-child{
 
     <input id="attName" placeholder="Attitude Name">
     <input id="attMarks" type="number" placeholder="Marks">
+
     <button onclick="addAttitude()">Add Attitude</button>
   </div>
 
@@ -249,19 +223,14 @@ table button:last-child{
 
 </div>
 
-<!-- JS (UNCHANGED LOGIC) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 <script src="app.js"></script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
   loadFilters();
   loadAttitudeMaster();
-});
 </script>
 
 </body>
 </html>
-
-
