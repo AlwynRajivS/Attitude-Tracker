@@ -5,306 +5,369 @@
 <title>Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 *{
   box-sizing:border-box;
   margin:0;
   padding:0;
-  font-family:'Poppins',sans-serif;
 }
 
 :root{
-  --primary:#3b82f6;
-  --primary-dark:#2563eb;
-  --success:#22c55e;
-  --success-dark:#16a34a;
-  --danger:#ef4444;
-  --danger-dark:#dc2626;
-  --dark-bg:#020617;
-  --card-bg:rgba(255,255,255,0.08);
-  --card-hover:rgba(255,255,255,0.12);
-  --text-primary:#fff;
-  --text-secondary:#e0e7ff;
-  --border-color:rgba(255,255,255,0.1);
-  --shadow:0 10px 40px rgba(0,0,0,0.3);
+  --primary:#6366f1;
+  --primary-dark:#4f46e5;
+  --primary-light:#818cf8;
+  --success:#10b981;
+  --success-dark:#059669;
+  --danger:#f43f5e;
+  --danger-dark:#e11d48;
+  --warning:#f59e0b;
+  --bg-dark:#0a0e27;
+  --bg-secondary:#0f1329;
+  --bg-tertiary:#1a1f3a;
+  --card-bg:#141930;
+  --text-primary:#f1f5f9;
+  --text-secondary:#94a3b8;
+  --text-muted:#64748b;
+  --border:#1e293b;
+  --border-light:#334155;
 }
 
 body{
   margin:0;
-  background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0c4a6e 100%);
+  font-family:'Inter',sans-serif;
+  background:var(--bg-dark);
   color:var(--text-primary);
   min-height:100vh;
-  position:relative;
   overflow-x:hidden;
 }
 
-/* Animated background elements */
-body::before,
-body::after{
+/* Animated mesh gradient background */
+body::before{
   content:'';
   position:fixed;
-  border-radius:50%;
-  filter:blur(100px);
-  opacity:0.1;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(99,102,241,0.15) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(16,185,129,0.12) 0%,transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(139,92,246,0.1) 0%,transparent 50%);
   pointer-events:none;
-  animation:float 25s infinite ease-in-out;
+  z-index:0;
+  animation:meshMove 20s ease-in-out infinite;
 }
 
-body::before{
-  width:700px;
-  height:700px;
-  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
-  top:-250px;
-  right:-250px;
+@keyframes meshMove{
+  0%,100%{opacity:1}
+  50%{opacity:0.8}
 }
 
-body::after{
-  width:600px;
-  height:600px;
-  background:linear-gradient(135deg,#06b6d4,#3b82f6);
-  bottom:-200px;
-  left:-200px;
-  animation-delay:-10s;
-}
-
-@keyframes float{
-  0%,100%{transform:translate(0,0) scale(1)}
-  33%{transform:translate(80px,-80px) scale(1.1)}
-  66%{transform:translate(-60px,60px) scale(0.9)}
-}
-
-/* ===== TOP BAR ===== */
-.topbar{
+/* ===== HEADER ===== */
+.header{
   position:sticky;
   top:0;
-  z-index:100;
-  background:rgba(2,6,23,0.95);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  padding:18px 24px;
+  z-index:1000;
+  background:rgba(10,14,39,0.8);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--border);
+}
+
+.header-inner{
+  max-width:1600px;
+  margin:0 auto;
+  padding:20px 32px;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  box-shadow:0 4px 30px rgba(0,0,0,0.5),
-             0 0 0 1px rgba(255,255,255,0.05) inset;
-  border-bottom:1px solid var(--border-color);
 }
 
-.topbar h2{
-  margin:0;
-  font-size:22px;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.brand-icon{
+  width:48px;
+  height:48px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  box-shadow:0 8px 16px rgba(99,102,241,0.3);
+}
+
+.brand-text h1{
+  font-size:20px;
   font-weight:700;
-  background:linear-gradient(135deg,#fff,#e0e7ff);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
   letter-spacing:-0.5px;
+  margin-bottom:2px;
+}
+
+.brand-text p{
+  font-size:13px;
+  color:var(--text-secondary);
+  font-weight:500;
 }
 
 .logout{
+  padding:12px 24px;
   background:linear-gradient(135deg,var(--danger),var(--danger-dark));
   border:none;
-  padding:10px 20px;
-  border-radius:12px;
+  border-radius:10px;
   color:#fff;
   font-weight:600;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  box-shadow:0 4px 15px rgba(239,68,68,0.3);
   font-size:14px;
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 4px 12px rgba(244,63,94,0.4);
 }
 
 .logout:hover{
   transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(239,68,68,0.4);
+  box-shadow:0 8px 20px rgba(244,63,94,0.5);
 }
 
 .logout:active{
   transform:translateY(0);
 }
 
-/* ===== PAGE ===== */
-.page{
-  max-width:1400px;
+/* ===== MAIN CONTENT ===== */
+.container{
+  max-width:1600px;
   margin:0 auto;
-  padding:32px 24px;
+  padding:40px 32px;
   position:relative;
   z-index:1;
 }
 
-/* ===== SECTION CARDS ===== */
-.section-card{
+/* ===== MODULE CARDS ===== */
+.module{
   background:var(--card-bg);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
   border-radius:20px;
-  padding:28px;
+  padding:32px;
   margin-bottom:32px;
-  box-shadow:var(--shadow),
-             0 0 0 1px rgba(255,255,255,0.08) inset;
-  animation:fadeUp 0.6s ease backwards;
-  transition:all 0.3s ease;
-}
-
-.section-card:hover{
-  background:var(--card-hover);
-  transform:translateY(-2px);
-  box-shadow:0 15px 50px rgba(0,0,0,0.4),
-             0 0 0 1px rgba(255,255,255,0.1) inset;
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(30px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.section-card:nth-child(1){animation-delay:0.1s}
-.section-card:nth-child(2){animation-delay:0.2s}
-.section-card:nth-child(3){animation-delay:0.3s}
-
-/* ===== HEADINGS ===== */
-h3{
-  margin:0 0 20px 0;
-  font-size:20px;
-  font-weight:700;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:var(--text-primary);
-  letter-spacing:-0.3px;
-}
-
-h3::after{
-  content:'';
-  flex:1;
-  height:2px;
-  background:linear-gradient(90deg,rgba(59,130,246,0.4),transparent);
-  border-radius:2px;
-}
-
-/* ===== FILTER GRID ===== */
-.filters{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:12px;
-  margin-bottom:20px;
-}
-
-.filters select,
-.filters input,
-.filters button{
-  padding:14px 16px;
-  border-radius:12px;
-  border:1px solid var(--border-color);
-  font-size:15px;
-  transition:all 0.3s ease;
-  font-weight:500;
-}
-
-.filters select,
-.filters input{
-  background:rgba(255,255,255,0.08);
-  color:var(--text-primary);
-  outline:none;
-}
-
-.filters select:focus,
-.filters input:focus{
-  border-color:var(--primary);
-  background:rgba(255,255,255,0.12);
-  box-shadow:0 0 0 3px rgba(59,130,246,0.15);
-}
-
-.filters select option{
-  background:#1e293b;
-  color:#fff;
-}
-
-.filters input::placeholder{
-  color:rgba(255,255,255,0.4);
-}
-
-.filters button{
-  background:linear-gradient(135deg,var(--success),var(--success-dark));
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  border:none;
-  box-shadow:0 4px 15px rgba(34,197,94,0.3);
+  border:1px solid var(--border);
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
   position:relative;
   overflow:hidden;
 }
 
-.filters button::before{
+.module::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--primary),var(--primary-light));
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+
+.module:hover{
+  border-color:var(--border-light);
+  transform:translateY(-4px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+.module:hover::before{
+  opacity:1;
+}
+
+/* ===== MODULE HEADER ===== */
+.module-header{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:28px;
+  padding-bottom:20px;
+  border-bottom:1px solid var(--border);
+}
+
+.module-icon{
+  width:56px;
+  height:56px;
+  background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(99,102,241,0.05));
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  border:1px solid rgba(99,102,241,0.3);
+}
+
+.module-title h2{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:4px;
+  letter-spacing:-0.5px;
+}
+
+.module-title p{
+  font-size:14px;
+  color:var(--text-secondary);
+  font-weight:500;
+}
+
+/* ===== CONTROL PANEL ===== */
+.control-panel{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+  margin-bottom:28px;
+}
+
+/* ===== FORM CONTROLS ===== */
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.form-label{
+  font-size:13px;
+  font-weight:600;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+
+.form-control,
+.form-select{
+  padding:14px 16px;
+  background:var(--bg-secondary);
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--text-primary);
+  font-size:15px;
+  font-weight:500;
+  transition:all 0.3s ease;
+  font-family:'Inter',sans-serif;
+}
+
+.form-control:focus,
+.form-select:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:var(--bg-tertiary);
+  box-shadow:0 0 0 4px rgba(99,102,241,0.1);
+}
+
+.form-control::placeholder{
+  color:var(--text-muted);
+}
+
+.form-select option{
+  background:var(--bg-secondary);
+  color:var(--text-primary);
+}
+
+/* ===== BUTTON GROUPS ===== */
+.btn-group{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.btn{
+  padding:14px 24px;
+  border:none;
+  border-radius:10px;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position:relative;
+  overflow:hidden;
+  font-family:'Inter',sans-serif;
+}
+
+.btn::before{
   content:'';
   position:absolute;
   top:50%;
   left:50%;
   width:0;
   height:0;
+  background:rgba(255,255,255,0.2);
   border-radius:50%;
-  background:rgba(255,255,255,0.3);
   transform:translate(-50%,-50%);
-  transition:width 0.5s,height 0.5s;
+  transition:width 0.6s,height 0.6s;
 }
 
-.filters button:hover::before{
+.btn:hover::before{
   width:300px;
   height:300px;
 }
 
-.filters button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(34,197,94,0.4);
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;
+  box-shadow:0 4px 12px rgba(99,102,241,0.4);
 }
 
-.filters button:active{
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(99,102,241,0.5);
+}
+
+.btn-success{
+  background:linear-gradient(135deg,var(--success),var(--success-dark));
+  color:#fff;
+  box-shadow:0 4px 12px rgba(16,185,129,0.4);
+}
+
+.btn-success:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(16,185,129,0.5);
+}
+
+.btn:active{
   transform:translateY(0);
 }
 
-/* ===== TABLE WRAPPER ===== */
-.table-wrap{
-  background:rgba(255,255,255,0.04);
-  border-radius:16px;
-  padding:12px;
+/* ===== DATA TABLE CONTAINER ===== */
+.data-container{
+  background:var(--bg-secondary);
+  border-radius:14px;
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+.table-wrapper{
   overflow-x:auto;
   -webkit-overflow-scrolling:touch;
-  border:1px solid var(--border-color);
-  box-shadow:0 4px 20px rgba(0,0,0,0.2) inset;
 }
 
-.table-wrap::-webkit-scrollbar{
-  height:10px;
+.table-wrapper::-webkit-scrollbar{
+  height:8px;
 }
 
-.table-wrap::-webkit-scrollbar-track{
-  background:rgba(255,255,255,0.05);
-  border-radius:10px;
+.table-wrapper::-webkit-scrollbar-track{
+  background:var(--bg-tertiary);
 }
 
-.table-wrap::-webkit-scrollbar-thumb{
-  background:rgba(59,130,246,0.5);
-  border-radius:10px;
+.table-wrapper::-webkit-scrollbar-thumb{
+  background:var(--primary);
+  border-radius:4px;
 }
 
-.table-wrap::-webkit-scrollbar-thumb:hover{
-  background:rgba(59,130,246,0.7);
+.table-wrapper::-webkit-scrollbar-thumb:hover{
+  background:var(--primary-light);
 }
 
-/* ===== TABLE ===== */
+/* ===== TABLE STYLES ===== */
 table{
   width:100%;
-  min-width:800px;
-  border-collapse:separate;
-  border-spacing:0 8px;
+  min-width:900px;
+  border-collapse:collapse;
 }
 
 thead{
@@ -314,59 +377,44 @@ thead{
 }
 
 th{
-  background:linear-gradient(135deg,#1e293b,#0f172a);
+  background:var(--bg-tertiary);
   color:var(--text-secondary);
-  padding:16px 14px;
-  font-size:13px;
-  font-weight:600;
+  padding:16px 20px;
+  text-align:left;
+  font-size:12px;
+  font-weight:700;
   text-transform:uppercase;
-  letter-spacing:0.5px;
-  border:none;
+  letter-spacing:0.8px;
+  border-bottom:2px solid var(--border);
   white-space:nowrap;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-}
-
-th:first-child{
-  border-radius:12px 0 0 12px;
-}
-
-th:last-child{
-  border-radius:0 12px 12px 0;
 }
 
 tbody tr{
-  transition:all 0.3s ease;
+  border-bottom:1px solid var(--border);
+  transition:all 0.2s ease;
 }
 
 tbody tr:hover{
-  transform:translateX(4px);
+  background:var(--bg-tertiary);
+}
+
+tbody tr:last-child{
+  border-bottom:none;
 }
 
 td{
-  background:#ffffff;
-  color:#1e293b;
-  padding:14px;
-  text-align:center;
+  padding:16px 20px;
+  color:var(--text-primary);
   font-size:14px;
   font-weight:500;
-  border:none;
-  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  text-align:left;
 }
 
-td:first-child{
-  border-radius:12px 0 0 12px;
-}
-
-td:last-child{
-  border-radius:0 12px 12px 0;
-}
-
-/* Attitude table specific styles */
+/* Attitude table specific */
 #attTable th:nth-child(2),
 #attTable td:nth-child(2){
   min-width:360px;
   max-width:420px;
-  text-align:left;
   white-space:nowrap;
 }
 
@@ -374,10 +422,10 @@ td:last-child{
   width:100%;
   padding:10px 14px;
   font-size:14px;
-  text-align:left;
-  border-radius:10px;
-  border:1px solid #cbd5e1;
-  background:#f8fafc;
+  background:var(--bg-dark);
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:var(--text-primary);
   font-weight:500;
   transition:all 0.3s ease;
 }
@@ -385,29 +433,37 @@ td:last-child{
 #attTable td:nth-child(2) input:focus{
   outline:none;
   border-color:var(--success);
-  box-shadow:0 0 0 3px rgba(34,197,94,0.15);
-  background:#fff;
+  box-shadow:0 0 0 3px rgba(16,185,129,0.1);
 }
 
-/* Inputs inside table */
+/* Table inputs */
 table input{
   width:90px;
-  padding:8px 10px;
+  padding:8px 12px;
+  background:var(--bg-dark);
+  border:1px solid var(--border);
   border-radius:8px;
-  border:1px solid #cbd5e1;
+  color:var(--text-primary);
   text-align:center;
   font-weight:500;
+  font-size:14px;
   transition:all 0.3s ease;
 }
 
 table input:focus{
   outline:none;
   border-color:var(--primary);
-  box-shadow:0 0 0 2px rgba(59,130,246,0.15);
+  box-shadow:0 0 0 3px rgba(99,102,241,0.1);
 }
 
-/* Buttons inside table */
-table button{
+/* Table action buttons */
+.table-actions{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+}
+
+.btn-sm{
   padding:8px 16px;
   border:none;
   border-radius:8px;
@@ -415,84 +471,119 @@ table button{
   font-weight:600;
   cursor:pointer;
   transition:all 0.3s ease;
-  position:relative;
-  overflow:hidden;
 }
 
-table button:first-child{
+.btn-sm.btn-success{
   background:linear-gradient(135deg,var(--success),var(--success-dark));
   color:#fff;
-  box-shadow:0 2px 8px rgba(34,197,94,0.3);
+  box-shadow:0 2px 8px rgba(16,185,129,0.3);
 }
 
-table button:first-child:hover{
+.btn-sm.btn-success:hover{
   transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(34,197,94,0.4);
+  box-shadow:0 4px 12px rgba(16,185,129,0.4);
 }
 
-table button:last-child{
+.btn-sm.btn-danger{
   background:linear-gradient(135deg,var(--danger),var(--danger-dark));
   color:#fff;
-  margin-left:8px;
-  box-shadow:0 2px 8px rgba(239,68,68,0.3);
+  box-shadow:0 2px 8px rgba(244,63,94,0.3);
 }
 
-table button:last-child:hover{
+.btn-sm.btn-danger:hover{
   transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(239,68,68,0.4);
+  box-shadow:0 4px 12px rgba(244,63,94,0.4);
 }
 
-table button:active{
+.btn-sm:active{
   transform:translateY(0);
 }
 
-/* Empty state */
+/* ===== EMPTY STATE ===== */
 .empty-state{
+  padding:60px 20px;
   text-align:center;
-  padding:40px 20px;
-  color:var(--text-secondary);
-  font-size:15px;
-  opacity:0.7;
 }
 
-/* ===== MOBILE OPTIMIZATIONS ===== */
+.empty-state-icon{
+  font-size:48px;
+  margin-bottom:16px;
+  opacity:0.3;
+}
+
+.empty-state-text{
+  color:var(--text-secondary);
+  font-size:15px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media(max-width:768px){
-  .page{
-    padding:20px 16px;
+  .header-inner{
+    padding:16px 20px;
   }
 
-  .topbar{
-    padding:14px 16px;
+  .brand-icon{
+    width:40px;
+    height:40px;
+    font-size:20px;
   }
 
-  .topbar h2{
-    font-size:18px;
+  .brand-text h1{
+    font-size:17px;
+  }
+
+  .brand-text p{
+    font-size:12px;
   }
 
   .logout{
-    padding:8px 16px;
+    padding:10px 16px;
     font-size:13px;
   }
 
-  .section-card{
-    padding:20px;
+  .container{
+    padding:24px 20px;
+  }
+
+  .module{
+    padding:24px 20px;
     margin-bottom:24px;
     border-radius:16px;
   }
 
-  h3{
-    font-size:17px;
-    margin-bottom:16px;
+  .module-header{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:20px;
   }
 
-  .filters{
-    gap:10px;
+  .module-icon{
+    width:48px;
+    height:48px;
+    font-size:24px;
   }
 
-  .filters select,
-  .filters input,
-  .filters button{
+  .module-title h2{
+    font-size:19px;
+  }
+
+  .module-title p{
+    font-size:13px;
+  }
+
+  .control-panel{
+    gap:12px;
+  }
+
+  .form-control,
+  .form-select{
     padding:12px 14px;
+    font-size:14px;
+  }
+
+  .btn{
+    padding:12px 20px;
     font-size:14px;
   }
 
@@ -510,42 +601,41 @@ table button:active{
   }
 
   th{
-    padding:12px 10px;
-    font-size:12px;
+    padding:12px 16px;
+    font-size:11px;
   }
 
   td{
-    padding:10px;
+    padding:12px 16px;
     font-size:13px;
   }
 }
 
-/* ===== TABLET & DESKTOP ===== */
 @media(min-width:768px){
-  .filters{
+  .control-panel{
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
   }
 
-  h3{
-    font-size:22px;
+  .btn-group{
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
   }
 }
 
 @media(min-width:1024px){
-  .page{
-    padding:40px 32px;
+  .container{
+    padding:48px 40px;
   }
 
-  .section-card{
-    padding:32px;
+  .module{
+    padding:40px;
   }
 }
 
 /* ===== LOADING STATE ===== */
 .loading{
+  position:relative;
   pointer-events:none;
   opacity:0.6;
-  position:relative;
 }
 
 .loading::after{
@@ -556,7 +646,7 @@ table button:active{
   width:20px;
   height:20px;
   margin:-10px 0 0 -10px;
-  border:3px solid rgba(255,255,255,0.3);
+  border:3px solid rgba(255,255,255,0.2);
   border-top-color:#fff;
   border-radius:50%;
   animation:spin 0.8s linear infinite;
@@ -564,6 +654,26 @@ table button:active{
 
 @keyframes spin{
   to{transform:rotate(360deg)}
+}
+
+/* ===== ANIMATIONS ===== */
+.module{
+  animation:moduleSlideIn 0.5s cubic-bezier(0.4,0,0.2,1) backwards;
+}
+
+.module:nth-child(1){animation-delay:0.1s}
+.module:nth-child(2){animation-delay:0.2s}
+.module:nth-child(3){animation-delay:0.3s}
+
+@keyframes moduleSlideIn{
+  from{
+    opacity:0;
+    transform:translateY(30px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 /* ===== ACCESSIBILITY ===== */
@@ -575,7 +685,6 @@ table button:active{
   }
 }
 
-/* Focus visible for keyboard navigation */
 *:focus-visible{
   outline:2px solid var(--primary);
   outline-offset:2px;
@@ -585,64 +694,127 @@ table button:active{
 
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <h2>Admin Dashboard</h2>
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<!-- PAGE CONTENT -->
-<div class="page">
-
-  <!-- REPORT SECTION -->
-  <div class="section-card">
-    <h3>📊 Report Download</h3>
-
-    <div class="filters">
-      <select id="dept"></select>
-      <select id="year"></select>
-      <select id="section"></select>
-      <button onclick="loadReport()">Load Report</button>
-      <button onclick="downloadCSV()">Download CSV</button>
-      <button onclick="downloadPDF()">Download PDF</button>
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🎯</div>
+      <div class="brand-text">
+        <h1>Admin Dashboard</h1>
+        <p>Discipline Monitoring System</p>
+      </div>
     </div>
-
-    <div class="table-wrap">
-      <table id="report"></table>
-    </div>
+    <button class="logout" onclick="logout()">Logout</button>
   </div>
+</header>
 
-  <!-- HOD MAIL SECTION -->
-  <div class="section-card">
-    <h3>📧 Draft HoD Mail</h3>
+<!-- MAIN CONTENT -->
+<main class="container">
 
-    <div class="filters">
-      <input type="date" id="fromDate">
-      <input type="date" id="toDate">
-      <button onclick="createHoDDrafts()">Create Draft Mails</button>
-    </div>
-  </div>
-
-  <!-- ATTITUDE MASTER SECTION -->
-  <div class="section-card">
-    <h3>🧠 Attitude Master</h3>
-
-    <div class="filters">
-      <select id="attType">
-        <option value="MIS">BAD</option>
-        <option value="GOOD">GOOD</option>
-      </select>
-      <input id="attName" placeholder="Attitude Name">
-      <input id="attMarks" type="number" placeholder="Marks">
-      <button onclick="addAttitude()">Add Attitude</button>
+  <!-- REPORT MODULE -->
+  <section class="module">
+    <div class="module-header">
+      <div class="module-icon">📊</div>
+      <div class="module-title">
+        <h2>Report Download</h2>
+        <p>Generate and export student discipline reports</p>
+      </div>
     </div>
 
-    <div class="table-wrap">
-      <table id="attTable"></table>
+    <div class="control-panel">
+      <div class="form-group">
+        <label class="form-label">Department</label>
+        <select id="dept" class="form-select"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Year</label>
+        <select id="year" class="form-select"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Section</label>
+        <select id="section" class="form-select"></select>
+      </div>
     </div>
-  </div>
 
-</div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="loadReport()">Load Report</button>
+      <button class="btn btn-success" onclick="downloadCSV()">Download CSV</button>
+      <button class="btn btn-success" onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <div class="data-container" style="margin-top:24px">
+      <div class="table-wrapper">
+        <table id="report"></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOD MAIL MODULE -->
+  <section class="module">
+    <div class="module-header">
+      <div class="module-icon">📧</div>
+      <div class="module-title">
+        <h2>Draft HoD Mail</h2>
+        <p>Create email drafts for Head of Departments</p>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <div class="form-group">
+        <label class="form-label">From Date</label>
+        <input type="date" id="fromDate" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="form-label">To Date</label>
+        <input type="date" id="toDate" class="form-control">
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="createHoDDrafts()">Create Draft Mails</button>
+    </div>
+  </section>
+
+  <!-- ATTITUDE MASTER MODULE -->
+  <section class="module">
+    <div class="module-header">
+      <div class="module-icon">🧠</div>
+      <div class="module-title">
+        <h2>Attitude Master</h2>
+        <p>Manage student attitude behaviors and scoring</p>
+      </div>
+    </div>
+
+    <div class="control-panel">
+      <div class="form-group">
+        <label class="form-label">Attitude Type</label>
+        <select id="attType" class="form-select">
+          <option value="MIS">BAD</option>
+          <option value="GOOD">GOOD</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Attitude Name</label>
+        <input id="attName" class="form-control" placeholder="Enter attitude name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Marks</label>
+        <input id="attMarks" type="number" class="form-control" placeholder="Enter marks">
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-success" onclick="addAttitude()">Add Attitude</button>
+    </div>
+
+    <div class="data-container" style="margin-top:24px">
+      <div class="table-wrapper">
+        <table id="attTable"></table>
+      </div>
+    </div>
+  </section>
+
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
